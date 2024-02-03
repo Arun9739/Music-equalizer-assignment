@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 300px;
+        width: 700px;
+        gap: 2rem;
+        padding: 2rem;
+        font-family: sans-serif;
+        background-color: #f0f0f0; 
+        border-radius: 10px;
+      }
+
+      .equalizer {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 0px;
+        width: 40rem;
+        height: 15rem;
+        border: 10px solid #000;
+      }
+
+      .bar {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #b1{
+        background: #8338ec;
+      }
+
+      #b2{
+        background: #f15bb5;
+      }
+
+      #b3{
+        background: #f26a8d;
+      }
+
+      #b4{
+        background: #ee964b;
+      }
+
+      #b5{
+        background: #fcca46;
+      }
+
+      .bar > span {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        transform: translateY(0);
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 8rem;
+      }
+
+      .start,
+      .stop,
+      .restart {
+        border: 2px solid currentcolor;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        background-color: transparent;
+        cursor: pointer;
+        font-weight: bold;
+        line-height: 1;
+        color: white;
+      }
+
+      .start {
+        color: darkgreen;
+      }
+
+      .start:hover {
+        background-color: lightgreen;
+      }
+
+      .stop {
+        color: darkred;
+      }
+
+      .stop:hover {
+        background-color: lightpink;
+      }
+
+      .restart {
+        color: darkblue;
+      }
+
+      .restart:hover {
+        background-color: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="equalizer">
+        <div class="bar" id="b1"><span></span></div>
+        <div class="bar" id="b2"><span></span></div>
+        <div class="bar" id="b3"><span></span></div>
+        <div class="bar" id="b4"><span></span></div>
+        <div class="bar" id="b5"><span></span></div>
+      </div>
+
+      <div class="controls">
+        <div class="actions">
+          <button class="start">Start</button>
+          <button class="stop">Stop</button>
+          <button class="restart">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let intervalHolder = null;
+      const speed = 450;
+
+      const stop = function () {
+        clearInterval(intervalHolder);
+      };
+
+      const start = function () {
+        const bars = document.querySelectorAll(".bar > span");
+        intervalHolder = setInterval(() => {
+          for (const bar of bars) {
+            const height = (Math.random() * 100).toFixed(2) + "%";
+            bar.style.transform = `translate3d(0, -${height}, 0)`;
+            bar.style.transitionDuration = `${speed}ms`;
+          }
+        }, speed + 50);
+      };
+
+      const restart = function () {
+        stop();
+        const initialBars = document.querySelectorAll(".bar > span");
+        for (const bar of initialBars) {
+          const height = "100%";
+          bar.style.transform = `translate3d(0, -${height}, 0)`;
+          bar.style.transitionDuration = "0ms";
+        }
+      };
+
+      const startButton = document.querySelector(".start");
+      startButton.addEventListener("click", start);
+
+      const stopButton = document.querySelector(".stop");
+      stopButton.addEventListener("click", stop);
+
+      const restartButton = document.querySelector(".restart");
+      restartButton.addEventListener("click", restart);
+
+      const initialBars = document.querySelectorAll(".bar > span");
+      for (const bar of initialBars) {
+        const height = "100%";
+        bar.style.transform = `translate3d(0, -${height}, 0)`;
+        bar.style.transitionDuration = "0ms";
+      }
+
+      stop();
+    </script>
+  </body>
+</html>
